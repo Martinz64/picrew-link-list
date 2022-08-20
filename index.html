@@ -28,6 +28,32 @@
         i.backup-mark:before{
             content: "↓";
         }
+
+        .download-panel {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid;
+            padding: 0.25em;
+        }
+        .download-panel h5{
+            margin: 0px;
+        }
+        h5.bottom {
+            margin: 0px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .toggle{
+            display: none;
+        }
+        .download-panel{
+            display: none;
+        }
+        .toggle:checked + .download-panel{
+            display: flex;
+        }
     </style>
 </head>
 <body>
@@ -80,14 +106,53 @@
                 "https://picrew.me/image_maker/22352|https://picrew.me/app/image_maker/22352/icon_9CfAZlBoST8WiwZe.png"
             ]
 
+            let backup_links_req = await fetch("backup-links.json")
+            let backup_links = await backup_links_req.json()
+
+
             let html = "";
             for (let i = 0; i < list.length; i++) {
                 const url = list[i].split("|")[0];
                 const img = list[i].split("|")[1];
                 const url_text = url.replace(/.*image_maker\//,"") 
-            
+
+                let backup_mark = ""
+                let download_area = ""
+                try{
+                    if(Object.keys(backup_links).indexOf(url_text) != -1){
+                        if(backup_links[url_text].length > 1){
+                            backup_mark = '<label for="toggle-'+url_text+'"><i class="backup-mark">Download</i></label>'
+                            
+                            let downloadlinks = ""
+
+                            for (let j = 0; j < backup_links[url_text].length; j++) {
+                                const element = backup_links[url_text][j];
+                                downloadlinks += "<a href='" + element + "'> Part " + (j+1) + "</a>"
+                            }
+
+
+                            download_area = `
+                                <input type="checkbox" class="toggle" id="toggle-${url_text}"/>
+                                <div class="download-panel">
+                                    <h5>Downloads</h5>
+                                    ${downloadlinks}
+                                </div>
+                            `
+                        } else {
+                            backup_mark = '<a href="' + backup_links[url_text][0] + '"><i class="backup-mark">Download</i></label>'
+                        }
+                    }
+                } catch(e){}
+
                 html += `
-                <div class="item"><a href="${url}"><img src="${img}"/><h5>${url_text}</h5></a></div>
+                <div class="item">
+                    <a href="${url}">
+                        <img src="${img}"/>
+                    </a>
+                    <h5 class="bottom">${url_text}${backup_mark}</h5>
+
+                    ${download_area}
+                </div>
                 `
             }
 
