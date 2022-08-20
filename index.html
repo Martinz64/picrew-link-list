@@ -17,6 +17,17 @@
         .item a img{
             height: 8em;
         }
+        i.backup-mark{
+            /*content: "✔ Backed up";*/
+            color: white;
+            background: green;
+            padding: 0.1em;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        i.backup-mark:before{
+            content: "↓";
+        }
     </style>
 </head>
 <body>
@@ -25,12 +36,13 @@
     <div id="content"></div>
 
     <script>
-        document.addEventListener("DOMContentLoaded",()=>{
+        document.addEventListener("DOMContentLoaded", async ()=>{
+
             const list = [
-                "https://picrew.me/image_maker/682537|https://picrew.me/app/image_maker/682537/icon_RWavT0WTbxbUiyIp.png",
-                "https://picrew.me/image_maker/394902|https://picrew.me/app/image_maker/394902/icon_R2SVwARquP61HRDg.png",
-                "https://picrew.me/image_maker/1140280|https://picrew.me/app/image_maker/1140280/icon_uo7wLihNxO5dpTpj.png",
-                "https://picrew.me/image_maker/7065|https://picrew.me/app/image_maker/7065/icon_ACFNI2toQrRWlbqK.png",
+                "https://picrew.me/image_maker/682537|https://picrew.me/app/image_maker/682537/icon_RWavT0WTbxbUiyIp.png|b",
+                "https://picrew.me/image_maker/394902|https://picrew.me/app/image_maker/394902/icon_R2SVwARquP61HRDg.png|b",
+                "https://picrew.me/image_maker/1140280|https://picrew.me/app/image_maker/1140280/icon_uo7wLihNxO5dpTpj.png|b",
+                "https://picrew.me/image_maker/7065|https://picrew.me/app/image_maker/7065/icon_ACFNI2toQrRWlbqK.png|b",
                 "https://picrew.me/image_maker/365408|https://picrew.me/app/image_maker/365408/icon_85ln0Y4BIQMpzlqp.png",
                 "https://picrew.me/image_maker/516657|https://picrew.me/app/image_maker/516657/icon_o2kh052j6zFtSbHx.png",
                 "https://picrew.me/image_maker/188948|https://picrew.me/app/image_maker/188948/icon_fNHX6uPZUJGAQMIk.png",
@@ -63,14 +75,17 @@
                 "https://picrew.me/secret_image_maker/9FA1DqSHdHbebP8R|https://picrew.me/app/image_maker/1667793/icon_BIHAw3bTqFOdcY5K.png",
                 "https://picrew.me/image_maker/1689727|https://picrew.me/app/image_maker/1689727/icon_YxOIr6u1MgRdBHC2.png",
                 "https://picrew.me/image_maker/8025|https://picrew.me/app/image_maker/8025/icon_AxPDaT4HhGSC2Ajx.png",
-                "https://picrew.me/image_maker/167775|https://picrew.me/app/image_maker/167775/icon_tLv8V2M7oJOhpblS.png"
+                "https://picrew.me/image_maker/167775|https://picrew.me/app/image_maker/167775/icon_tLv8V2M7oJOhpblS.png",
+
+                "https://picrew.me/image_maker/22352|https://picrew.me/app/image_maker/22352/icon_9CfAZlBoST8WiwZe.png"
             ]
 
             let html = "";
             for (let i = 0; i < list.length; i++) {
                 const url = list[i].split("|")[0];
                 const img = list[i].split("|")[1];
-                const url_text = url.replace(/.*image_maker/,"") 
+                const url_text = url.replace(/.*image_maker\//,"") 
+            
                 html += `
                 <div class="item"><a href="${url}"><img src="${img}"/><h5>${url_text}</h5></a></div>
                 `
